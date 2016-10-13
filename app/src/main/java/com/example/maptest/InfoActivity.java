@@ -17,6 +17,16 @@ public class InfoActivity extends AppCompatActivity {
     // BUTTONS //
     /////////////
 
+    public void vehiclePressed(View view) {
+        Intent intent = new Intent(this, VehicleActivity.class);
+        startActivity(intent);
+    }
+
+    public void healthPressed(View view) {
+        Intent intent = new Intent(this, HealthActivity.class);
+        startActivity(intent);
+    }
+
     public void mapsPressed(View view) {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);

@@ -5,12 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class SettingsActivity extends AppCompatActivity {
+public class HealthActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_health);
     }
 
     /////////////
@@ -19,11 +19,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void vehiclePressed(View view) {
         Intent intent = new Intent(this, VehicleActivity.class);
-        startActivity(intent);
-    }
-
-    public void healthPressed(View view) {
-        Intent intent = new Intent(this, HealthActivity.class);
         startActivity(intent);
     }
 
@@ -39,6 +34,11 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void infoPressed(View view) {
         Intent intent = new Intent(this, InfoActivity.class);
+        startActivity(intent);
+    }
+
+    public void settingsPressed(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 }

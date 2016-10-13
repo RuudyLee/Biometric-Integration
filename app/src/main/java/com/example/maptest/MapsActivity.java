@@ -180,13 +180,23 @@ public class MapsActivity extends FragmentActivity implements
     // BUTTONS //
     /////////////
 
-    public void infoPressed(View view) {
-        Intent intent = new Intent(this, InfoActivity.class);
+    public void vehiclePressed(View view) {
+        Intent intent = new Intent(this, VehicleActivity.class);
+        startActivity(intent);
+    }
+
+    public void healthPressed(View view) {
+        Intent intent = new Intent(this, HealthActivity.class);
         startActivity(intent);
     }
 
     public void mediaPressed(View view) {
         Intent intent = new Intent(this, MediaActivity.class);
+        startActivity(intent);
+    }
+
+    public void infoPressed(View view) {
+        Intent intent = new Intent(this, InfoActivity.class);
         startActivity(intent);
     }
 

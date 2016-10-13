@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -12,15 +11,27 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/info_button"
+            android:contentDescription="@string/desc"
+            android:id="@+id/vehicle_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="1dip"
             android:layout_weight="0"
-            android:onClick="mediaPressed"
-            android:src="@mipmap/info_icon"/>
+            android:src="@mipmap/vehicle_icon"
+            android:onClick="vehiclePressed"/>
 
         <ImageButton
+            android:contentDescription="@string/desc"
+            android:id="@+id/health_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dip"
+            android:layout_weight="0"
+            android:src="@mipmap/health_icon"
+            android:onClick="healthPressed"/>
+
+        <ImageButton
+            android:contentDescription="@string/desc"
             android:id="@+id/map_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,6 +40,7 @@
             android:src="@mipmap/gmap_icon"/>
 
         <ImageButton
+            android:contentDescription="@string/desc"
             android:text="@string/media_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,6 +51,17 @@
             android:src="@mipmap/media_icon"/>
 
         <ImageButton
+            android:contentDescription="@string/desc"
+            android:id="@+id/info_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dip"
+            android:layout_weight="0"
+            android:onClick="infoPressed"
+            android:src="@mipmap/info_icon"/>
+
+        <ImageButton
+            android:contentDescription="@string/desc"
             android:text="@string/settings_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
