@@ -154,6 +154,7 @@ public class MapsActivity extends FragmentActivity implements
     // FUNCTIONS //
     ///////////////
 
+    private boolean firstTime = true;
     private void handleNewLocation(Location location) {
         //Log.d(TAG, location.toString());
         if (mMap != null) {
@@ -169,7 +170,10 @@ public class MapsActivity extends FragmentActivity implements
                 .title("I am here!");
 
         mMap.addMarker(options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        if (firstTime) {
+            firstTime = false;
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
     }
 
     private void setUpMap() {
