@@ -73,8 +73,14 @@
     </LinearLayout>
 
     <TextView
-        android:text="Vehicle-ToDo"
+        android:text="Speed by Calculation:"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+        android:id="@+id/vehicleSpeed" />
+
+    <TextView
+        android:text="Speed by Formula"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/formulaSpeed" />
 </LinearLayout>
