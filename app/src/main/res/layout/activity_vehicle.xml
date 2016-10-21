@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:padding="1dip"
             android:layout_weight="0"
-            android:src="@mipmap/vehicle_icon"/>
+            android:src="@drawable/ic_vehicle"/>
 
         <ImageButton
             android:contentDescription="@string/desc"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:padding="1dip"
             android:layout_weight="0"
-            android:src="@mipmap/health_icon"
+            android:src="@drawable/ic_health"
             android:onClick="healthPressed"/>
 
         <ImageButton
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:padding="1dip"
             android:layout_weight="0"
-            android:src="@mipmap/gmap_icon"
+            android:src="@drawable/ic_map"
             android:onClick="mapsPressed"/>
 
         <ImageButton
@@ -47,7 +47,7 @@
             android:id="@+id/media_button"
             android:layout_weight="0"
             android:onClick="mediaPressed"
-            android:src="@mipmap/media_icon"/>
+            android:src="@drawable/ic_media"/>
 
         <ImageButton
             android:contentDescription="@string/desc"
@@ -57,7 +57,7 @@
             android:padding="1dip"
             android:layout_weight="0"
             android:onClick="infoPressed"
-            android:src="@mipmap/info_icon"/>
+            android:src="@drawable/ic_info"/>
 
         <ImageButton
             android:contentDescription="@string/desc"
@@ -68,7 +68,7 @@
             android:id="@+id/settings_button"
             android:layout_weight="0"
             android:onClick="settingsPressed"
-            android:src="@mipmap/settings_icon"/>
+            android:src="@drawable/ic_settings"/>
 
     </LinearLayout>
 

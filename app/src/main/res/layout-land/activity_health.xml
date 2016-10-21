@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/heart_rate_label"
+            android:layout_width="97dp"
+            android:layout_height="80dp"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/ic_heartrate" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_avg"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="00"
+                android:textSize="20dp"
+                android:gravity="right"/>
+
+            <TextView
+                android:id="@+id/tv_bpm"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:gravity="right"
+                android:text="60"
+                android:textSize="50dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/t_avg"
+                android:layout_width="wrap_content"
+                android:gravity="bottom"
+                android:text="avg"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/t_bpm"
+                android:layout_width="wrap_content"
+                android:gravity="bottom"
+                android:text="bpm"
+                android:layout_height="50dp" />
+
+        </LinearLayout>
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/vehicle_button"
+            android:layout_width="143dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:contentDescription="@string/desc"
+            android:onClick="vehiclePressed"
+            android:padding="1dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_vehicle" />
+
+        <ImageButton
+            android:id="@+id/health_button"
+            android:layout_width="143dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:contentDescription="@string/desc"
+            android:padding="1dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_health" />
+
+        <ImageButton
+            android:id="@+id/map_button"
+            android:layout_width="143dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:contentDescription="@string/desc"
+            android:onClick="mapsPressed"
+            android:padding="1dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_map" />
+
+        <ImageButton
+            android:id="@+id/media_button"
+            android:layout_width="143dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:contentDescription="@string/desc"
+            android:onClick="mediaPressed"
+            android:padding="1dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_media" />
+
+        <ImageButton
+            android:id="@+id/info_button"
+            android:layout_width="143dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:contentDescription="@string/desc"
+            android:onClick="infoPressed"
+            android:padding="1dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_info" />
+
+        <ImageButton
+            android:id="@+id/settings_button"
+            android:layout_width="143dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:contentDescription="@string/desc"
+            android:onClick="settingsPressed"
+            android:padding="1dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_settings" />
+
+    </LinearLayout>
+
+</LinearLayout>
