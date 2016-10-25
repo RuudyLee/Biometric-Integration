@@ -39,16 +39,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MapsActivity"
-            android:screenOrientation="sensorLandscape"/>
-        <activity android:name=".MediaActivity"
-            android:screenOrientation="sensorLandscape"/>
-        <activity android:name=".SettingsActivity"
-            android:screenOrientation="sensorLandscape"/>
-        <activity android:name=".VehicleActivity"
-            android:screenOrientation="sensorLandscape"/>
-        <activity android:name=".HealthActivity"
-            android:screenOrientation="sensorLandscape"></activity>
+        <activity
+            android:name=".MapsActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".MediaActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".VehicleActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".HealthActivity"
+            android:screenOrientation="sensorLandscape" />
+
+        <service
+            android:name=".WearListenerService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
