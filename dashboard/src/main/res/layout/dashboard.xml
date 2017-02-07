@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#3B3B3B">
+
+    <Button
+        android:text="Random"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/random_speed" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/circle"
+        android:id="@+id/circle"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/speed"
+        android:id="@+id/speedometer"
+        android:scaleX="0.85"
+        android:scaleY="0.85"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/fuck"
+        android:id="@+id/line"
+        android:scaleX="0.3"
+        android:translationX="50dp"
+        android:translationY="8dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        android:layout_alignBottom="@+id/GasBar"
+        android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        android:id="@+id/GasBar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:indeterminate="false"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="300"
+        android:progress="100"
+        android:scaleY="-1.9"
+        android:scaleX="1.9"
+        android:rotation="-45"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/line"
+        android:layout_marginStart="30dp" />
+
+    <ProgressBar
+        android:id="@+id/rpm"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:indeterminate="false"
+        android:progressDrawable="@drawable/circular_progress_bar_2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="300"
+        android:progress="0"
+        android:scaleY="-1.9"
+        android:scaleX="-1.9"
+        android:rotation="45"
+        android:layout_alignTop="@+id/GasBar"
+        android:layout_alignStart="@+id/GasBar"
+        android:layout_marginStart="22dp" />
+
+    <ImageView
+        app:srcCompat="@drawable/heart"
+        android:id="@+id/heartImage"
+        android:scaleType="fitEnd"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/GasBar"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:text="000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bpm"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="#ffffffff"
+        android:layout_marginEnd="23dp"
+        android:layout_marginTop="33dp"
+        android:layout_alignTop="@+id/heartImage"
+        android:layout_alignEnd="@+id/GasBar" />
+
+    <TextView
+        android:text="RPM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/random_speed"
+        android:layout_toStartOf="@+id/GasBar" />
+
+    <TextView
+        android:text="Gas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_alignBottom="@+id/random_speed"
+        android:layout_toEndOf="@+id/line"
+        android:layout_alignTop="@+id/textView" />
+
+</RelativeLayout>
