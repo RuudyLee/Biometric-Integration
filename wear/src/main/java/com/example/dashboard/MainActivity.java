@@ -1,7 +1,6 @@
-package com.example.maptest;
+package com.example.dashboard;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,8 +9,9 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.wearable.view.WatchViewStub;
+import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -21,7 +21,7 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
-public class MainActivity extends Activity implements
+public class MainActivity extends WearableActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         SensorEventListener {
@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements
 
     SensorManager mSensorManager;
     Sensor mHeartRateSensor;
+    int mSensorRateOfFire = 5;
 
     static private final int MY_PERMISSIONS_REQUEST_BODY_SENSORS = 1;
 
@@ -41,6 +42,8 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setAmbientEnabled();
 
         // Connect the GoogleApiClient
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -62,10 +65,8 @@ public class MainActivity extends Activity implements
         } else {
             // Already have permissions
             mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-            mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mHeartRateSensor, mSensorRateOfFire);
         }
-
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class MainActivity extends Activity implements
         if (!mResolvingError) {
             mGoogleApiClient.connect();
         }
-        mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mHeartRateSensor, mSensorRateOfFire);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class MainActivity extends Activity implements
 
     @Override
     protected void onPause() {
-        super.onResume();
+        super.onPause();
         if (!mResolvingError) {
             mGoogleApiClient.disconnect();
         }
@@ -132,9 +133,9 @@ public class MainActivity extends Activity implements
             case MY_PERMISSIONS_REQUEST_BODY_SENSORS: {
                 // if request is cancelled, result arrays are empty
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("SUCCES", "YES");
+                    Log.d("SUCCESS", "YES");
                     mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
-                    mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+                    mSensorManager.registerListener(this, mHeartRateSensor, mSensorRateOfFire);
                 }
             }
         }
@@ -161,13 +162,14 @@ public class MainActivity extends Activity implements
                     }
             );
         }
-
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
             sendMessage(String.valueOf(event.values[0]));
+            TextView textView = (TextView) findViewById(R.id.hr_text);
+            textView.setText("Heart Rate: " + String.valueOf(event.values[0]));
         }
     }
 

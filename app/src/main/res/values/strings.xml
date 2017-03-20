@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">MapTest</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="map_button">Map</string>
-    <string name="media_button">Media</string>
-    <string name="info_button">Info</string>
-    <string name="settings_button">Settings</string>
-    <string name="desc">A Description</string>
-</resources>

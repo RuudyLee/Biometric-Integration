@@ -2,6 +2,11 @@ package com.example.dashboard;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,21 +21,20 @@ import android.widget.TextView;
 
 import java.util.Random;
 
-
 //Purpose: Mock up prototype of simulated dashboard for Capstone project.
 //Handles the random animation of visual gauges (speedometer, RPM, Gas, Heart rate)
 public class MainActivity extends AppCompatActivity {
 
     ImageView m_speedImage;
     ImageView m_heartImage;
-    
+
     TextView m_heartRate;
     ProgressBar m_speedBar;
     ProgressBar m_gasBar;
 
     RotateAnimation m_speedAnim;
     ScaleAnimation m_heartAnim;
-    
+
     ObjectAnimator m_RPMAnimation;
     ObjectAnimator m_gasAnimation;
 
@@ -42,19 +46,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
 
+        // Register local broadcast receiver
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, messageFilter);
 
         //get reference to buttons and gauges.
-        Button randomButton = (Button)findViewById(R.id.random_speed);
+        Button randomButton = (Button) findViewById(R.id.random_speed);
 
-        m_speedBar = (ProgressBar)findViewById(R.id.rpm);
-        m_gasBar = (ProgressBar)findViewById(R.id.GasBar);
+        m_speedBar = (ProgressBar) findViewById(R.id.rpm);
+        m_gasBar = (ProgressBar) findViewById(R.id.GasBar);
 
-        m_speedImage = (ImageView)findViewById(R.id.line);
-        m_heartImage = (ImageView)findViewById(R.id.heartImage);
-        m_heartRate = (TextView)findViewById(R.id.bpm);
+        m_speedImage = (ImageView) findViewById(R.id.line);
+        m_heartImage = (ImageView) findViewById(R.id.heartImage);
+        m_heartRate = (TextView) findViewById(R.id.bpm);
 
         //Set initial animations
-        SetNewSpeedAnimation(0.0f,-180.0f);
+        SetNewSpeedAnimation(0.0f, -180.0f);
         SetNewHeartAnimation(75);
 
 
@@ -67,12 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         randomButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view)
-            {
-                if(true)
-                {
+            public void onClick(View view) {
+                if (true) {
                     Random r = new Random();
-                    float nextpos = (float)(r.nextInt(180) - 0);
+                    float nextpos = (float) (r.nextInt(180) - 0);
                     SetNewSpeedAnimation(-m_currentNeedlePos, -nextpos);
                     m_currentNeedlePos = nextpos;
 
@@ -89,15 +95,11 @@ public class MainActivity extends AppCompatActivity {
                 SetNewGasAnimation();
             }
         });
-        
     }
-
-
-
-    public void SetNewSpeedAnimation(float start, float end){
+    public void SetNewSpeedAnimation(float start, float end) {
 
         m_speedImage.clearAnimation();
-        m_speedAnim = new RotateAnimation(start ,end, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        m_speedAnim = new RotateAnimation(start, end, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         m_speedAnim.setInterpolator(new LinearInterpolator());
 
         m_speedAnim.setRepeatCount(0);
@@ -107,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void SetNewHeartAnimation(float bpm){
+    public void SetNewHeartAnimation(float bpm) {
 
-        int rate = (int)((60 / bpm * 1000) /4);
+        int rate = (int) ((60 / bpm * 1000) / 4);
 
         m_heartImage.clearAnimation();
-        m_heartAnim = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f, Animation.RELATIVE_TO_SELF,0.5f, Animation.RELATIVE_TO_SELF,0.5f);
+        m_heartAnim = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         m_heartAnim.setInterpolator(new LinearInterpolator());
 
         m_heartAnim.setRepeatCount(Animation.INFINITE);
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void SetNewRpmAnimation(){
+    private void SetNewRpmAnimation() {
 
         Random r = new Random();
         int progress = (r.nextInt(100));
@@ -137,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void SetNewGasAnimation(){
+    private void SetNewGasAnimation() {
 
         Random r = new Random();
         int progress = (r.nextInt(100));
@@ -173,5 +175,16 @@ public class MainActivity extends AppCompatActivity {
     //     return super.onOptionsItemSelected(item);
     // }
 
+    // Message Receive Service
+    public class MessageReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            double d = Double.parseDouble(message);
+            int messageAsInt = (int) d;
 
+            m_heartRate.setText(Integer.toString(messageAsInt));
+            SetNewHeartAnimation(messageAsInt);
+        }
+    }
 }
