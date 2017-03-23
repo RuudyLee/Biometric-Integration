@@ -2,10 +2,12 @@ package com.example.dashboard;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +22,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 //Purpose: Mock up prototype of simulated dashboard for Capstone project.
 //Handles the random animation of visual gauges (speedometer, RPM, Gas, Heart rate)
@@ -27,85 +31,99 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView m_speedImage;
     ImageView m_heartImage;
-
+    ImageView m_rpmImage;
     TextView m_heartRate;
-    ProgressBar m_speedBar;
-    ProgressBar m_gasBar;
 
     RotateAnimation m_speedAnim;
     ScaleAnimation m_heartAnim;
 
-    ObjectAnimator m_RPMAnimation;
-    ObjectAnimator m_gasAnimation;
-
     float m_currentNeedlePos = 0;
-    int m_currentGasProgress = 0;
+    boolean isVisible = true;
+
+    AlertHandler m_alertHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard);
+        setContentView(R.layout.dashboard_zenpad);
+
+        //Collect references to art
+        m_speedImage = (ImageView) findViewById(R.id.Line);
+        m_heartImage = (ImageView) findViewById(R.id.heartImage);
+        m_heartRate = (TextView) findViewById(R.id.bpm);
+        m_rpmImage = (ImageView) findViewById(R.id.rpmLine);
 
         // Register local broadcast receiver
         IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, messageFilter);
 
-        //get reference to buttons and gauges.
-        Button randomButton = (Button) findViewById(R.id.random_speed);
+        //ALERTS.
+        //---------------------------------------------
+        m_alertHandler = (AlertHandler)getFragmentManager().findFragmentById(R.id.alertFragment);
 
-        m_speedBar = (ProgressBar) findViewById(R.id.rpm);
-        m_gasBar = (ProgressBar) findViewById(R.id.GasBar);
 
-        m_speedImage = (ImageView) findViewById(R.id.line);
-        m_heartImage = (ImageView) findViewById(R.id.heartImage);
-        m_heartRate = (TextView) findViewById(R.id.bpm);
+        //Initalize transition animations
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(0, 0);
+        ft.hide(getFragmentManager().findFragmentById(R.id.alertFragment));
+        ft.commit();
+        //--------------------------------------------
+
+        //get reference to buttons.
+        Button scenerio1 = (Button) findViewById(R.id.random_speed);
 
         //Set initial animations
-        SetNewSpeedAnimation(0.0f, -180.0f);
         SetNewHeartAnimation(75);
 
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
-        //Progress bar animations do not have their own animation class in Marshmallow
-        //We must instead use the property animator.
-        m_gasAnimation = ObjectAnimator.ofInt(m_speedBar, "progress", 0, 100);
-        m_gasAnimation.setInterpolator(new LinearInterpolator());
-        m_gasAnimation.setDuration(1500);
-        m_gasAnimation.start();
+                        //Modulate needle rotation up and down for speed and rpm
+                        float nextpos = 0;
+                        if(m_currentNeedlePos == -110)
+                            nextpos = 60;
+                        else
+                        nextpos = -110;
+
+                        SetNewNeedleAnimation(m_speedImage, m_speedAnim, -m_currentNeedlePos, -nextpos, 1500);
+                        SetNewNeedleAnimation(m_rpmImage, m_speedAnim, -m_currentNeedlePos, -nextpos, 500);
+                        m_currentNeedlePos = nextpos;
+                    }
+                });
+            }
+        },0,3000);
 
 
-        randomButton.setOnClickListener(new View.OnClickListener() {
+
+        scenerio1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if (true) {
-                    Random r = new Random();
-                    float nextpos = (float) (r.nextInt(180) - 0);
-                    SetNewSpeedAnimation(-m_currentNeedlePos, -nextpos);
-                    m_currentNeedlePos = nextpos;
-
+                if(isVisible)
+                {
+                    HideAlert();
                 }
-                ////////////////////////////////////////////////////
-                Random r = new Random();
-                int bpm = (r.nextInt(100) + 45);
-
-                m_heartRate.setText(Integer.toString(bpm));
-                SetNewHeartAnimation(bpm);
-                //////////////////////////////////////////////////////
-
-                SetNewRpmAnimation();
-                SetNewGasAnimation();
+                else
+                {
+                    ShowAlert();
+                }
+                isVisible = !isVisible;
             }
         });
     }
-    public void SetNewSpeedAnimation(float start, float end) {
+    public void SetNewNeedleAnimation(ImageView image, RotateAnimation animation, float start, float end, int duration) {
 
-        m_speedImage.clearAnimation();
-        m_speedAnim = new RotateAnimation(start, end, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        m_speedAnim.setInterpolator(new LinearInterpolator());
+        image.clearAnimation();
+        animation = new RotateAnimation(start, end, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setInterpolator(new LinearInterpolator());
 
-        m_speedAnim.setRepeatCount(0);
-        m_speedAnim.setFillAfter(true);
-        m_speedAnim.setDuration(1000);
-        m_speedImage.setAnimation(m_speedAnim);
+        animation.setRepeatCount(0);
+        animation.setFillAfter(true);
+        animation.setDuration(duration);
+        image.setAnimation(animation);
 
     }
 
@@ -124,56 +142,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void SetNewRpmAnimation() {
 
-        Random r = new Random();
-        int progress = (r.nextInt(100));
-
-        m_RPMAnimation = ObjectAnimator.ofInt(m_speedBar, "progress", 0, progress);
-        m_RPMAnimation.setInterpolator(new LinearInterpolator());
-        m_RPMAnimation.setRepeatCount(1);
-        m_RPMAnimation.setRepeatMode(ValueAnimator.REVERSE);
-        m_RPMAnimation.setDuration(500);
-        m_RPMAnimation.start();
-
+    private void ShowAlert(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_in,R.anim.slide_out);
+        ft.show(getFragmentManager().findFragmentById(R.id.alertFragment));
+        ft.commit();
     }
 
-
-    private void SetNewGasAnimation() {
-
-        Random r = new Random();
-        int progress = (r.nextInt(100));
-
-        m_gasAnimation = ObjectAnimator.ofInt(m_gasBar, "progress", m_currentGasProgress, progress);
-        m_gasAnimation.setInterpolator(new LinearInterpolator());
-        m_gasAnimation.setDuration(1000);
-        m_gasAnimation.start();
-
-        m_currentGasProgress = progress;
+    private void HideAlert(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_in,R.anim.slide_out);
+        ft.hide(getFragmentManager().findFragmentById(R.id.alertFragment));
+        ft.commit();
     }
-
-    //Cretes a menu bar options menu
-    // @Override
-    // public boolean onCreateOptionsMenu(Menu menu) {
-    //     getMenuInflater().inflate(R.menu.menu_main, menu);
-    //     return true;
-    // }
-
-    // //Hangles Item bar clicks
-    // @Override
-    // public boolean onOptionsItemSelected(MenuItem item) {
-    //     int id = item.getItemId();
-
-    //     if(id == R.id.action_settings){
-    //         return true;
-    //     }
-    //     if(id == R.id.action_about){
-    //         Intent intent = new Intent(this, AnimationActivity.class);
-    //         startActivity(intent);
-    //         return true;
-    //     }
-    //     return super.onOptionsItemSelected(item);
-    // }
 
     // Message Receive Service
     public class MessageReceiver extends BroadcastReceiver {

@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Capstone.iml" filepath="$PROJECT_DIR$/Capstone.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MapTest.iml" filepath="$PROJECT_DIR$/MapTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/dashboard/dashboard.iml" filepath="$PROJECT_DIR$/dashboard/dashboard.iml" />
-      <module fileurl="file://$PROJECT_DIR$/gmcapstone.iml" filepath="$PROJECT_DIR$/gmcapstone.iml" />
       <module fileurl="file://$PROJECT_DIR$/wear/wear.iml" filepath="$PROJECT_DIR$/wear/wear.iml" />
     </modules>
   </component>

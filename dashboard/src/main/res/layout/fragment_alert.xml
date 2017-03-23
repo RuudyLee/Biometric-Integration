@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="#FF4A4A">
+
+    <TextView
+        android:text="ALERT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        app:srcCompat="@drawable/heart"
+        android:id="@+id/imageView" />
+
+    <TextView
+        android:text="We have Detected a problem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="18sp" />
+
+    <Button
+        android:text="Call 911"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Emergency" />
+
+    <Button
+        android:text="Start Dashcam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/DashCam" />
+</LinearLayout>

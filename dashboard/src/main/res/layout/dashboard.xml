@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/fuck"
-        android:id="@+id/line"
+        android:id="@+id/Line"
         android:scaleX="0.3"
         android:translationX="50dp"
         android:translationY="8dp"
@@ -59,7 +59,7 @@
         android:scaleX="1.9"
         android:rotation="-45"
         android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/line"
+        android:layout_alignStart="@+id/Line"
         android:layout_marginStart="30dp" />
 
     <ProgressBar
@@ -106,7 +106,7 @@
         android:text="RPM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
+        android:id="@+id/Title"
         android:layout_alignBottom="@+id/random_speed"
         android:layout_toStartOf="@+id/GasBar" />
 
@@ -116,7 +116,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
         android:layout_alignBottom="@+id/random_speed"
-        android:layout_toEndOf="@+id/line"
-        android:layout_alignTop="@+id/textView" />
+        android:layout_toEndOf="@+id/Line"
+        android:layout_alignTop="@+id/Title" />
 
 </RelativeLayout>

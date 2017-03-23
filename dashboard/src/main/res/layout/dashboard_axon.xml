@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/bakcground"
+        android:layout_x="2dp"
+        android:layout_y="-1dp"
+        android:id="@+id/background" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/dials"
+        android:layout_x="-95dp"
+        android:layout_y="-7dp"
+        android:id="@+id/dials" />
+
+    <ImageView
+        android:layout_width="112dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/fuck"
+        android:layout_x="117dp"
+        android:layout_y="117dp"
+        android:id="@+id/Line" />
+
+    <ImageView
+        android:layout_width="74dp"
+        android:layout_height="113dp"
+        app:srcCompat="@drawable/fuck"
+        android:layout_x="40dp"
+        android:layout_y="32dp"
+        android:id="@+id/rpmLine" />
+
+    <TextView
+        android:text="000"
+        android:layout_width="88dp"
+        android:layout_height="57dp"
+        android:id="@+id/bpm"
+        android:layout_x="91dp"
+        android:layout_y="280dp"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        app:srcCompat="@drawable/heart"
+        android:id="@+id/heartImage"
+        android:layout_x="78dp"
+        android:layout_y="231dp"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="false" />
+
+    <fragment
+        android:layout_width="179dp"
+        android:layout_height="match_parent"
+        android:name="com.example.dashboard.AlertHandler"
+        android:layout_x="466dp"
+        android:layout_y="4dp"
+        android:id="@+id/alertFragment"
+        tools:layout="@layout/fragment_alert" />
+
+    <Button
+        android:text="Alert Scenario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="323dp"
+        android:layout_y="293dp"
+        android:id="@+id/random_speed" />
+
+</AbsoluteLayout>
