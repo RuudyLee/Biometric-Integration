@@ -1,13 +1,10 @@
 package com.example.dashboard;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +15,8 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -63,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         m_alertHandler = (AlertHandler)getFragmentManager().findFragmentById(R.id.alertFragment);
 
 
-        //Initalize transition animations
+        //Initialize transition animations
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(0, 0);
         ft.hide(getFragmentManager().findFragmentById(R.id.alertFragment));
