@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -17,12 +18,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Wearable;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 //Purpose: Mock up prototype of simulated dashboard for Capstone project.
 //Handles the random animation of visual gauges (speedometer, RPM, Gas, Heart rate)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     ImageView m_speedImage;
     ImageView m_heartImage;
@@ -37,10 +48,21 @@ public class MainActivity extends AppCompatActivity {
 
     AlertHandler m_alertHandler;
 
+    Node mNode; // the connected device to send the message to
+    GoogleApiClient mGoogleApiClient;
+    private boolean mResolvingError = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_zenpad);
+
+        // Connect the GoogleApiClient
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
         //Collect references to art
         m_speedImage = (ImageView) findViewById(R.id.Line);
@@ -55,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         //ALERTS.
         //---------------------------------------------
-        m_alertHandler = (AlertHandler)getFragmentManager().findFragmentById(R.id.alertFragment);
+        m_alertHandler = (AlertHandler) getFragmentManager().findFragmentById(R.id.alertFragment);
 
 
         //Initialize transition animations
@@ -80,10 +102,10 @@ public class MainActivity extends AppCompatActivity {
 
                         //Modulate needle rotation up and down for speed and rpm
                         float nextpos = 0;
-                        if(m_currentNeedlePos == -110)
+                        if (m_currentNeedlePos == -110)
                             nextpos = 60;
                         else
-                        nextpos = -110;
+                            nextpos = -110;
 
                         SetNewNeedleAnimation(m_speedImage, m_speedAnim, -m_currentNeedlePos, -nextpos, 1500);
                         SetNewNeedleAnimation(m_rpmImage, m_speedAnim, -m_currentNeedlePos, -nextpos, 500);
@@ -91,24 +113,98 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        },0,3000);
-
+        }, 0, 3000);
 
 
         scenerio1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if(isVisible)
-                {
+                if (isVisible) {
                     HideAlert();
-                }
-                else
-                {
+                } else {
                     ShowAlert();
                 }
                 isVisible = !isVisible;
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!mResolvingError) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (!mResolvingError) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (!mResolvingError) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    /**
+     * Resolve the node = the connected device to send the message to
+     */
+    private void resolveNode() {
+
+        Wearable.NodeApi.getConnectedNodes(mGoogleApiClient)
+                .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
+                    @Override
+                    public void onResult(NodeApi.GetConnectedNodesResult nodes) {
+                        for (Node node : nodes.getNodes()) {
+                            mNode = node;
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        resolveNode();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    /**
+     * Send message to mobile handheld
+     */
+    private void sendMessage(String Key) {
+
+        if (mNode != null && mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            Wearable.MessageApi.sendMessage(mGoogleApiClient, mNode.getId(), Key, null).setResultCallback(
+
+                    // If send fails, return an error code
+                    new ResultCallback<MessageApi.SendMessageResult>() {
+                        @Override
+                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+
+                            if (!sendMessageResult.getStatus().isSuccess()) {
+                                // Send a message
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
     public void SetNewNeedleAnimation(ImageView image, RotateAnimation animation, float start, float end, int duration) {
 
         image.clearAnimation();
@@ -138,16 +234,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void ShowAlert(){
+    private void ShowAlert() {
+        // Send a haptic pulse to wear
+        sendMessage("start");
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in,R.anim.slide_out);
+        ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
         ft.show(getFragmentManager().findFragmentById(R.id.alertFragment));
         ft.commit();
     }
 
-    private void HideAlert(){
+    private void HideAlert() {
+        sendMessage("stop");
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in,R.anim.slide_out);
+        ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
         ft.hide(getFragmentManager().findFragmentById(R.id.alertFragment));
         ft.commit();
     }
